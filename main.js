@@ -74,7 +74,7 @@ const createMainWindow = () => {
         setAspectRatio(win, windowSize, UISize, edge, currentSize, posWindow);
     })
     win.loadURL('https://allb-browser.pokelabo.jp/web/play?type=' + configData['playVersion']);
-
+    win.webContents.openDevTools();
     win.setTitle("Shukuchi");
     
 };
