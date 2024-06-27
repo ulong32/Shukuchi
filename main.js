@@ -177,19 +177,6 @@ const templateMenu = [
         label: 'ツール',
         submenu: [
             {
-                label: 'タイムアウト抑止',
-                type: 'checkbox',
-                click(item, focusedWindow) {
-                    if (isSetNoTimeout) {
-                        focusedWindow.webContents.send('no-timeout-false')
-                        isSetNoTimeout = false;
-                    } else {
-                        focusedWindow.webContents.send('no-timeout-true')
-                        isSetNoTimeout = true;
-                    }
-                }
-            },
-            {
                 label: 'アプリのリセット',
                 role: 'forceReload'
             },
