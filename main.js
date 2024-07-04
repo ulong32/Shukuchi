@@ -5,13 +5,12 @@ const fs = require('fs');
 const { app, BrowserWindow, dialog, Menu, shell, ipcMain } = require('electron');
 const path = require('path');
 
-let isSetNoTimeout = false;
 let isLockAspectRatio = false;
 let key = null;
 let idMainWindow = null;
 
 const setAspectRatio = (win, windowSize, UISize, edge, currentSize, posWindow) => {
-    
+
     switch(edge) {
         case 'bottom':
             win.setSize(Math.round((currentSize.height - UISize[1]) * 16 / 9) + UISize[0], currentSize.height);
@@ -76,7 +75,7 @@ const createMainWindow = () => {
     win.loadURL('https://allb-browser.pokelabo.jp/web/play?type=' + configData['playVersion']);
     win.webContents.openDevTools();
     win.setTitle("Shukuchi");
-    
+
 };
 
 const createSettingWindow = () => {
@@ -101,12 +100,11 @@ app.whenReady().then(() => {
         existConfig = false
     }
     if (existConfig) createMainWindow();
-    
+
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) createMainWindow();
     });
-    
 });
 
 app.on('window-all-closed', () => {
@@ -132,7 +130,6 @@ const templateMenu = [
     {
         label: '&Shukuchi',
         submenu: [
-            
             {
                 label: '終了',
                 accelerator: 'Alt+F4',
@@ -169,6 +166,13 @@ const templateMenu = [
                 type: 'checkbox',
                 click() {
                     isLockAspectRatio = !isLockAspectRatio;
+                }
+            },
+            {
+                label: "統計情報",
+                type: "checkbox",
+                click() {
+                    BrowserWindow.getFocusedWindow().webContents.send("info-window", "s");
                 }
             }
         ]
@@ -220,8 +224,6 @@ const templateMenu = [
                         if (key == 0) {
                             shell.openExternal("https://github.com/ulong32/Shukuchi/releases");
                         }
-                        
-                    
                 }
             },
             {
