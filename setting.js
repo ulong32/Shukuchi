@@ -24,11 +24,12 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     btnExport.addEventListener('click', () => {
-        const width = document.getElementById('numWidth').value;
-        const height = document.getElementById('numHeight').value;
-        const platform = document.getElementById('radioLogin').elements["radioLogin"].value;
-        const exdata = `{\n\t"playVersion": "${platform}",\n\t"winHeight": "${height}",\n\t"winWidth": "${width}"\n}`
-        ipcRenderer.send('config-save', exdata);
+        const data = {
+            playVersion: document.getElementById('radioLogin').elements["radioLogin"].value,
+            winHeight: document.getElementById('numHeight').value,
+            winWidth: document.getElementById('numWidth').value,
+        }
+        ipcRenderer.send('config-save', JSON.stringify(data, undefined, 2));
         ipcRenderer.send('close-setting');
     })
 

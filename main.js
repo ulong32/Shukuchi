@@ -122,7 +122,7 @@ ipcMain.on('close-setting', () => {
     })
     createMainWindow();
 });
-ipcMain.on("DOM loaded", () => {
+ipcMain.on("set-title", () => {
     BrowserWindow.fromId(idMainWindow).setTitle('Shukuchi');
 });
 
@@ -193,7 +193,7 @@ const templateMenu = [
             },
             {
                 label: '設定',
-                click(item, focusedWindow) {
+                click() {
                     key = dialog.showMessageBoxSync(
                     {
                         type: 'question',

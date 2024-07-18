@@ -4,6 +4,7 @@ const { ipcRenderer } = require("electron");
 let frame = 0;
 let prevFrame = 0;
 let showInfoWindow = false;
+let lastClickedTime = 0;
 
 ipcRenderer.on("info-window", () => {
     showInfoWindow = !showInfoWindow;
@@ -19,8 +20,10 @@ const onVideoFrameUpdated = (gameWindow) => {
     });
 }
 
-const buildInfoWindowText = (time, frame, fps) => {
-    return `Time: ${time}
+const buildInfoWindowText = (time,  width, height, frame, fps) => {
+    return `Time: ${time / 1000} s
+Stand for: ${Math.floor((getDate() - lastClickedTime) / 1000)} s
+Resolution: ${height}x${width}
 Total frame: ${frame}
 FPS: ${fps}`;
 }
@@ -43,6 +46,12 @@ healthMonitor.style.display = "none";
         const intvId = setInterval(() => {
             const gameWindow = document.querySelector("#js-game-video");
             if (gameWindow !== null) {
+                // タイトルを"Shukuchi"に設定
+                ipcRenderer.send("set-title");
+                lastClickedTime = getDate();
+                gameWindow.addEventListener("click", () => {
+                    lastClickedTime = getDate();
+                })
                 frame = 0;
                 onVideoFrameUpdated(gameWindow);
                 setInterval(() => {
@@ -50,6 +59,8 @@ healthMonitor.style.display = "none";
                     prevFrame = frame;
                     healthMonitor.innerText = buildInfoWindowText(
                         Math.floor(gameWindow.getVideoPlaybackQuality().creationTime),
+                        gameWindow.videoWidth,
+                        gameWindow.videoHeight,
                         frame,
                         framePerSecond
                     );
@@ -67,3 +78,25 @@ healthMonitor.style.display = "none";
         }
     }, 500);
 });
+
+const setKeyboardShortcut = (element) => {
+    element.addEventListener("keydown", (e) => {
+        console.log("str");
+        console.log(e.key);
+        if(e.ctrlKey) {
+            if(e.shiftKey) {
+                switch(e.key) {
+                    case "i":
+                        ipcRenderer.send("toggle-devtool");
+                        break;
+                    case "r":
+                        window.location.href = window.location.href;
+                }
+            }
+        }
+    })
+}
+
+const getDate = () => {
+    return Date.now()
+};
