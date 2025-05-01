@@ -98,5 +98,5 @@ const setKeyboardShortcut = (element) => {
 }
 
 const getDate = () => {
-    return Date.now()
+    return Date.now();
 };

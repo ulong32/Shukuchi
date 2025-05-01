@@ -18,8 +18,8 @@
   },
   "homepage": "https://github.com/ulong32/Shukuchi#readme",
   "devDependencies": {
-    "electron": "^22.0.0",
-    "electron-builder": "^24.13.3"
+    "electron": "^36.0.1",
+    "electron-builder": "^26.0.12"
   },
   "build": {
     "appId": "jp.ulong32.shukuchi",
